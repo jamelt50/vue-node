@@ -1,23 +1,79 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import { getToken } from "../services/AuthServices";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
+    path: "/login",
+    name: "login",
+    beforeEnter: (to, from, next) => {
+      const token = getToken();
+
+      if (token) {
+        next({ name: "wall" });
+      } else {
+        next();
+      }
+    },
+    component: () => import("../views/c-login-page.vue"),
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/register",
+    name: "register",
+    beforeEnter: (to, from, next) => {
+      const token = getToken();
+
+      if (token) {
+        next({ name: "wall" });
+      } else {
+        next();
+      }
+    },
+    component: () => import("../views/c-register-page.vue"),
+  },
+  {
+    path: "/wall",
+    name: "wall",
+    component: () => import("../views/c-wall-page.vue"),
+    beforeEnter: (to, from, next) => {
+      const token = getToken();
+
+      if (token === "" || token === null || token === undefined) {
+        next({ name: "login" });
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/messages",
+    name: "messages",
+    component: () => import("../views/c-messages-page.vue"),
+    beforeEnter: (to, from, next) => {
+      const token = getToken();
+
+      if (token === "" || token === null || token === undefined) {
+        next({ name: "login" });
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: () => import("../views/c-profile-page.vue"),
+    beforeEnter: (to, from, next) => {
+      const token = getToken();
+
+      if (token === "" || token === null || token === undefined) {
+        next({ name: "login" });
+      } else {
+        next();
+      }
+    },
   },
 ];
 

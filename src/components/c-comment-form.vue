@@ -1,0 +1,57 @@
+<template>
+  <div>
+    <form @submit.prevent="handleComment" action="POST">
+      <textarea
+        @keyup.enter="handleComment"
+        v-model="content"
+        class="rounded-2xl bg-background w-full p-3"
+        name="message"
+        placeholder="Votre Message..."
+        id=""
+      ></textarea>
+      <button
+        type="submit"
+        class="text-primary flex items-center justify-center ml-auto"
+      >
+        <span class="mx-1">envoyer</span>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M6 0.5C2.9625 0.5 0.5 2.9625 0.5 6C0.5 9.0375 2.9625 11.5 6 11.5C9.0375 11.5 11.5 9.0375 11.5 6C11.5 2.9625 9.0375 0.5 6 0.5ZM4.8965 4.3535C4.80542 4.2592 4.75502 4.1329 4.75616 4.0018C4.7573 3.8707 4.80989 3.74529 4.90259 3.65259C4.99529 3.55989 5.1207 3.5073 5.2518 3.50616C5.3829 3.50502 5.5092 3.55542 5.6035 3.6465L7.6035 5.6465C7.69724 5.74026 7.74989 5.86742 7.74989 6C7.74989 6.13258 7.69724 6.25974 7.6035 6.3535L5.6035 8.3535C5.5092 8.44458 5.3829 8.49498 5.2518 8.49384C5.1207 8.4927 4.99529 8.44011 4.90259 8.34741C4.80989 8.25471 4.7573 8.1293 4.75616 7.9982C4.75502 7.8671 4.80542 7.7408 4.8965 7.6465L6.543 6L4.8965 4.3535Z"
+            fill="#0085FF"
+          />
+        </svg>
+      </button>
+    </form>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      content: "",
+    };
+  },
+  methods: {
+    handleComment() {
+      this.$store.dispatch("addComment", {
+        content: this.content,
+        message_id: this.$store.state.selectedMessage._id,
+      });
+      this.content = "";
+      this.$parent.scroll();
+    },
+  },
+};
+</script>
+
+<style>
+</style>
